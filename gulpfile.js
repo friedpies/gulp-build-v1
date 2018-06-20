@@ -10,6 +10,7 @@ const imagemin = require('gulp-imagemin');
 const minifyCSS = require('gulp-minify-css');
 const del = require('del');
 const sequence = require('run-sequence');
+const browserSync = require('browser-sync');
 
 gulp.task("concatScripts", function(){
   return gulp.src([
@@ -61,16 +62,22 @@ gulp.task("images", function(){
 });
 
 gulp.task("clean", function(){
-  del('dist')
+  del('dist/*')
 });
 
 gulp.task("build", function(){
   sequence(
     'clean',
-     ['scripts', 'styles', 'images'
-   ])
+    'scripts',
+    'styles',
+    'images'
+   )
 });
 
 gulp.task("default", ['build'], function(){
-
+  browserSync.init({
+      server: {
+        baseDir: "./"
+      }
+  });
 });
